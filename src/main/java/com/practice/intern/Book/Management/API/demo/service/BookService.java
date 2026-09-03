@@ -22,6 +22,5 @@ public class BookService {
     }
 
     public Book getBookByid(Long id){
-        return repository.getReferenceById(id);
-    }
+        return repository.findById(id).orElseThrow();}
 }
