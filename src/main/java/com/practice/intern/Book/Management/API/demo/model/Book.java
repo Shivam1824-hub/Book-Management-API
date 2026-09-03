@@ -9,14 +9,14 @@ import jakarta.persistence.Id;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long  id;
 
     private String title;
     private String author;
     private double price;
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
