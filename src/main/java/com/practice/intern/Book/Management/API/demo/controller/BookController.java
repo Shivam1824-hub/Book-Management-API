@@ -1,6 +1,9 @@
 package com.practice.intern.Book.Management.API.demo.controller;
 
+import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +16,8 @@ public class BookController {
         this.service = service;
     }
 
-
-
+    @PostMapping
+    public Book addBook(@RequestBody Book book){
+        return service.createBook(book);
+    }
 }
