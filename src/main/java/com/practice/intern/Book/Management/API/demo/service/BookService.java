@@ -35,4 +35,10 @@ public class BookService {
 
         return repository.save(book);
     }
+
+    public  String deleteBookById(Long id){
+         repository.findById(id).orElseThrow();
+         repository.deleteById(id);
+         return "ID has been deleted";
+    }
 }
