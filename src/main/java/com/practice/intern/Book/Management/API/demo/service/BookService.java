@@ -1,5 +1,6 @@
 package com.practice.intern.Book.Management.API.demo.service;
 
+import com.practice.intern.Book.Management.API.demo.exception.BookNotFoundException;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,19 @@ public class BookService {
     }
 
     public List<Book> getBook(){
-        return repository.findAll();
+        List<Book> books = repository.findAll();
+        if (books.isEmpty()) {
+            throw new BookNotFoundException("No books found in the database");
+        }
+        return books;
     }
 
     public Book getBookById(Long id){
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id: " + id));
     }
 
     public Book updateBookById(Long id, Book updatedData){
-        Book book = repository.findById(id).orElseThrow();
+        Book book = repository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id: " + id));
         book.setAuthor(updatedData.getAuthor());
         book.setPrice(updatedData.getPrice());
         book.setTitle(updatedData.getTitle());
@@ -36,9 +41,10 @@ public class BookService {
         return repository.save(book);
     }
 
-    public  String deleteBookById(Long id){
-         repository.findById(id).orElseThrow();
-         repository.deleteById(id);
-         return "ID has been deleted";
+    public String deleteBookById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new BookNotFoundException("Book not found with id: " + id);
+        } repository.deleteById(id);
+        return "ID has been deleted";
     }
 }
