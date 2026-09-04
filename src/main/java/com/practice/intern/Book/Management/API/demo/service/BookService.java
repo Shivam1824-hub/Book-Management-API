@@ -20,12 +20,8 @@ public class BookService {
         return repository.save(book);
     }
 
-    public List<Book> getBook(){
-        List<Book> books = repository.findAll();
-        if (books.isEmpty()) {
-            throw new BookNotFoundException("No books found in the database");
-        }
-        return books;
+    public List<Book> getBooks(){
+        return repository.findAll();
     }
 
     public Book getBookById(Long id){
