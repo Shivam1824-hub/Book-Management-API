@@ -54,4 +54,12 @@ public class BookController {
         List<Book> findBook = service.findByTitleOrAuthor(title, author);
         return  ResponseEntity.ok(findBook);
     }
+
+    @GetMapping("/price")
+    public ResponseEntity<List<Book>> getSortedBook(@RequestParam(defaultValue = "asc") String sort){
+        List<Book> sortedBook = service.getBooksSortedByPrice(sort);
+        return  ResponseEntity.ok(sortedBook);
+
+    }
+
 }

@@ -3,8 +3,8 @@ package com.practice.intern.Book.Management.API.demo.service;
 import com.practice.intern.Book.Management.API.demo.exception.BookNotFoundException;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.repository.BookRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -46,5 +46,13 @@ public class BookService {
 
     public List<Book> findByTitleOrAuthor(String title,String author){
         return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
+    }
+
+    public List<Book> getBooksSortedByPrice(String sort){
+        Sort sorted = Sort.by("price").ascending();
+        if("desc".equalsIgnoreCase(sort)){
+            sorted =Sort.by("price").descending();
+        }
+        return repository.findAll(sorted);
     }
 }
