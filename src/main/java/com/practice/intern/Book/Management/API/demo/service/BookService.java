@@ -43,4 +43,8 @@ public class BookService {
         } repository.deleteById(id);
         return "ID has been deleted";
     }
+
+    public List<Book> findByTitleOrAuthor(String title,String author){
+        return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
+    }
 }
