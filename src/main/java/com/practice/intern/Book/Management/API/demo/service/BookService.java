@@ -3,6 +3,9 @@ package com.practice.intern.Book.Management.API.demo.service;
 import com.practice.intern.Book.Management.API.demo.exception.BookNotFoundException;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +51,12 @@ public class BookService {
         return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
     }
 
-    public List<Book> getBooksSortedByPrice(String sort){
-        Sort sorted = Sort.by("price").ascending();
-        if("desc".equalsIgnoreCase(sort)){
-            sorted =Sort.by("price").descending();
+    public Page<Book> getBooksSortedByPrice(int page, int size, String sortBy, String direction){
+        Sort sorted = Sort.by(sortBy).ascending();
+        if("desc".equalsIgnoreCase(direction)){
+            sorted =Sort.by(sortBy).descending();
         }
-        return repository.findAll(sorted);
+        Pageable pageable = PageRequest.of(page, size, sorted);
+        return repository.findAll(pageable);
     }
 }

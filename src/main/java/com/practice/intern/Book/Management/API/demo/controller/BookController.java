@@ -2,6 +2,10 @@ package com.practice.intern.Book.Management.API.demo.controller;
 
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,11 +59,17 @@ public class BookController {
         return  ResponseEntity.ok(findBook);
     }
 
-    @GetMapping("/price")
-    public ResponseEntity<List<Book>> getSortedBook(@RequestParam(defaultValue = "asc") String sort){
-        List<Book> sortedBook = service.getBooksSortedByPrice(sort);
-        return  ResponseEntity.ok(sortedBook);
-
+    @GetMapping("/")
+    public ResponseEntity<Page<Book>> getSortedBook(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "price") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction){
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+        Page<Book> sortedbooks = service.getBooksSortedByPrice(page, size, sortBy,direction);
+        return  ResponseEntity.ok(sortedbooks);
     }
+
+
 
 }
