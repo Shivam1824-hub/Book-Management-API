@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -24,7 +25,7 @@ public class BookService {
         return repository.save(book);
     }
 
-    public List<Book> getBooks(){
+    public List<Book> getAllBooks(){
         return repository.findAll();
     }
 
@@ -52,20 +53,30 @@ public class BookService {
         return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
     }
 
-    public Page<Book> getBooksSortedByPrice(int page, int size, String sortBy, String direction){
-        Sort sorted = Sort.by(sortBy).ascending();
-        if("desc".equalsIgnoreCase(direction)){
-            sorted =Sort.by(sortBy).descending();
+//    public Page<Book> getBooksSortedByPrice(int page, int size, String sortBy, String direction){
+//        Sort sorted = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).ascending() :Sort.by(sortBy).descending();
+//        Pageable pageable = PageRequest.of(page, size, sorted);
+//        return repository.findAll(pageable);
+//    }
+//    public List<Book> filterBooks(BigDecimal minPrice, BigDecimal maxPrice){
+//        Specification<Book> spec = (root, query, cb) -> cb.conjunction();
+//        if(minPrice != null){
+//            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), minPrice));}
+//        if (maxPrice != null){
+//            spec = spec.and(((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), maxPrice) ));}
+//        return repository.findAll(spec);
+//    }
+
+    public Page<Book> getBooks(BigDecimal minPrice,BigDecimal maxPrice,int page,int size,String sortBy,String direction){
+        Sort sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();// it is using inline ternary operator
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Specification<Book> spec = ((root, query, cb) -> cb.conjunction());
+        if(minPrice !=null){
+            spec =spec.and((root, query, cb) ->cb.greaterThanOrEqualTo(root.get("price"),minPrice));
         }
-        Pageable pageable = PageRequest.of(page, size, sorted);
-        return repository.findAll(pageable);
-    }
-    public List<Book> filterBooks(Double minPrice,Double maxPrice){
-        Specification<Book> spec = (root, query, cb) -> cb.conjunction();
-        if(minPrice != null){
-            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), minPrice));}
-        if (maxPrice != null){
-            spec = spec.and(((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), maxPrice) ));}
-        return repository.findAll(spec);
+        if(maxPrice!=null){
+            spec = spec.and((root, query, cb) ->cb.lessThanOrEqualTo(root.get("price"),maxPrice));
+        }
+        return repository.findAll(spec,pageable);
     }
 }

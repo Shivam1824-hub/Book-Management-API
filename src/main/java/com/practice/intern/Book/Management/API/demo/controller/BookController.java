@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -28,8 +29,8 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Book>> getBooks(){
-        List<Book> book = service.getBooks();
+    public ResponseEntity<List<Book>> getAllBooks(){
+        List<Book> book = service.getAllBooks() ;
         return ResponseEntity.ok(book);
     }
 
@@ -59,22 +60,34 @@ public class BookController {
         return  ResponseEntity.ok(findBook);
     }
 
+//    @GetMapping("/")
+//    public ResponseEntity<Page<Book>> getSortedBook(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "price") String sortBy,
+//            @RequestParam(defaultValue = "asc") String direction){
+////        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+//        Page<Book> sortedbooks = service.getBooksSortedByPrice(page, size, sortBy,direction);
+//        return  ResponseEntity.ok(sortedbooks);
+//    }
+//
+//    @GetMapping("/filter")
+//    public ResponseEntity<List<Book>> filter(
+//            @RequestParam(required = false) BigDecimal minPrice,
+//            @RequestParam(required = false) BigDecimal maxPrice){
+//        return ResponseEntity.ok(service.filterBooks(minPrice,maxPrice));
+//    }
+
     @GetMapping("/")
-    public ResponseEntity<Page<Book>> getSortedBook(
+    public ResponseEntity<Page<Book>> getBooks(
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "price") String sortBy,
             @RequestParam(defaultValue = "asc") String direction){
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
-        Page<Book> sortedbooks = service.getBooksSortedByPrice(page, size, sortBy,direction);
-        return  ResponseEntity.ok(sortedbooks);
-    }
-
-    @GetMapping("/filter")
-    public ResponseEntity<List<Book>> filter(
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice){
-        return ResponseEntity.ok(service.filterBooks(minPrice,maxPrice));
+        Page<Book> sortedBooks = service.getBooks(minPrice, maxPrice, page, size, sortBy, direction);
+        return ResponseEntity.ok(sortedBooks);
     }
 
 
