@@ -70,6 +70,12 @@ public class BookController {
         return  ResponseEntity.ok(sortedbooks);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<Book>> filter(
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice){
+        return ResponseEntity.ok(service.filterBooks(minPrice,maxPrice));
+    }
 
 
 }
