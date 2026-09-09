@@ -52,13 +52,13 @@ public class BookController {
          return ResponseEntity.ok(message);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Book>> findByTitleOrAuthor(
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "author") String author){
-        List<Book> findBook = service.findByTitleOrAuthor(title, author);
-        return  ResponseEntity.ok(findBook);
-    }
+//    @GetMapping("/search")
+//    public ResponseEntity<List<Book>> findByTitleOrAuthor(
+//            @RequestParam(value = "title") String title,
+//            @RequestParam(value = "author") String author){
+//        List<Book> findBook = service.findByTitleOrAuthor(title, author);
+//        return  ResponseEntity.ok(findBook);
+//    }
 
 //    @GetMapping("/")
 //    public ResponseEntity<Page<Book>> getSortedBook(

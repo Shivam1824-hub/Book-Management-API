@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long>,JpaSpecificationExecutor<Book> {
-    public  List<Book> findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(String titleKeyword,String authorKeyword);
+//    public  List<Book> findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(String titleKeyword,String authorKeyword);
 
 }

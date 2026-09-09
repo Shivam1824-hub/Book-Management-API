@@ -50,9 +50,9 @@ public class BookService {
         return "ID has been deleted";
     }
 
-    public List<Book> findByTitleOrAuthor(String title,String author){
-        return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
-    }
+//    public List<Book> findByTitleOrAuthor(String title,String author){
+//        return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
+//    }
 
 //    public Page<Book> getBooksSortedByPrice(int page, int size, String sortBy, String direction){
 //        Sort sorted = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).ascending() :Sort.by(sortBy).descending();
