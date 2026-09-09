@@ -80,13 +80,14 @@ public class BookController {
 
     @GetMapping("/")
     public ResponseEntity<Page<Book>> getBooks(
+            @RequestParam(required = false) String search,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "price") String sortBy,
             @RequestParam(defaultValue = "asc") String direction){
-        Page<Book> sortedBooks = service.getBooks(minPrice, maxPrice, page, size, sortBy, direction);
+        Page<Book> sortedBooks = service.getBooks(search,minPrice, maxPrice, page, size, sortBy, direction);
         return ResponseEntity.ok(sortedBooks);
     }
 

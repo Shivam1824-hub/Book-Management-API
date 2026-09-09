@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BookService {
@@ -67,10 +68,17 @@ public class BookService {
 //        return repository.findAll(spec);
 //    }
 
-    public Page<Book> getBooks(BigDecimal minPrice,BigDecimal maxPrice,int page,int size,String sortBy,String direction){
+    public Page<Book> getBooks(String search,BigDecimal minPrice,BigDecimal maxPrice,int page,int size,String sortBy,String direction){
         Sort sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();// it is using inline ternary operator
         Pageable pageable = PageRequest.of(page,size,sort);
         Specification<Book> spec = ((root, query, cb) -> cb.conjunction());
+
+        if(search!=null && !search.trim().isEmpty()){
+            String matchPattern = "%"+search.trim().toLowerCase()+"%";
+            spec =spec.and((root, query, cb) ->cb.or(
+                    cb.like(cb.lower(root.get("title")),matchPattern),
+                    cb.like(cb.lower(root.get("author")),matchPattern)) );
+        }
         if(minPrice !=null){
             spec =spec.and((root, query, cb) ->cb.greaterThanOrEqualTo(root.get("price"),minPrice));
         }
