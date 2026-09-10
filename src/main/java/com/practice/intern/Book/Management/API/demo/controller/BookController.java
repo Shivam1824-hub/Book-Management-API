@@ -2,6 +2,7 @@ package com.practice.intern.Book.Management.API.demo.controller;
 
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,10 +24,16 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<Book> addBook(@RequestBody Book book){
+    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
         Book saveBook= service.createBook(book);
         return new ResponseEntity<>(saveBook, HttpStatus.CREATED);
     }
+
+//    @PostMapping
+//    public ResponseEntity<BookDto> createBook(@Valid @RequestBody BookDto bookDto){
+//        BookDto savedBook = service.createBook(bookDto);
+//        return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
+//    }
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks(){
