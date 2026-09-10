@@ -1,5 +1,7 @@
 package com.practice.intern.Book.Management.API.demo.controller;
 
+import com.practice.intern.Book.Management.API.demo.DTO.BookRequestDto;
+import com.practice.intern.Book.Management.API.demo.DTO.BookResponseDto;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
 import jakarta.validation.Valid;
@@ -23,17 +25,17 @@ public class BookController {
         this.service = service;
     }
 
-    @PostMapping
-    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
-        Book saveBook= service.createBook(book);
-        return new ResponseEntity<>(saveBook, HttpStatus.CREATED);
-    }
-
 //    @PostMapping
-//    public ResponseEntity<BookDto> createBook(@Valid @RequestBody BookDto bookDto){
-//        BookDto savedBook = service.createBook(bookDto);
-//        return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
+//    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
+//        Book saveBook= service.createBook(book);
+//        return new ResponseEntity<>(saveBook, HttpStatus.CREATED);
 //    }
+
+    @PostMapping
+    public ResponseEntity<BookResponseDto> createBook(@Valid @RequestBody BookRequestDto requestDto){
+        BookResponseDto savedBook = service.createBook(requestDto);
+        return new ResponseEntity<>(savedBook,HttpStatus.CREATED);
+    }
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks(){

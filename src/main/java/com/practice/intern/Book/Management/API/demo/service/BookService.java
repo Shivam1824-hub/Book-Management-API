@@ -1,8 +1,11 @@
 package com.practice.intern.Book.Management.API.demo.service;
 
+import com.practice.intern.Book.Management.API.demo.DTO.BookRequestDto;
+import com.practice.intern.Book.Management.API.demo.DTO.BookResponseDto;
 import com.practice.intern.Book.Management.API.demo.exception.BookNotFoundException;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.repository.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,18 +15,35 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class BookService {
     private final BookRepository repository;
 
-    public BookService(BookRepository repository){
+
+    public BookService(BookRepository repository) {
         this.repository = repository;
     }
 
-    public Book createBook(Book book){
-        return repository.save(book);
+//    public Book createBook(Book book){
+//        return repository.save(book);
+//    }
+
+    public BookResponseDto createBook(BookRequestDto requestDto){
+        Book book = new Book();
+        book.setTitle(requestDto.getTitle());
+        book.setPrice(requestDto.getPrice());
+        book.setAuthor(requestDto.getAuthor());
+
+        Book savedBook = repository.save(book);
+
+        BookResponseDto responseDto = new BookResponseDto();
+        responseDto.setId(savedBook.getId());
+        responseDto.setTitle(savedBook.getTitle());
+        responseDto.setAuthor(savedBook.getAuthor());
+        responseDto.setPrice(savedBook.getPrice());
+
+        return responseDto;
     }
 
     public List<Book> getAllBooks(){

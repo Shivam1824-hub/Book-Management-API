@@ -1,23 +1,20 @@
-package com.practice.intern.Book.Management.API.demo.model;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+package com.practice.intern.Book.Management.API.demo.DTO;
 
 import java.math.BigDecimal;
 
-@Entity
-public class Book {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  id;
+public class BookResponseDto {
 
+    private Long id;
     private String title;
     private String author;
-
     private BigDecimal price;
 
+//    public BookResponseDto(Long id, String title, String author, BigDecimal price) {
+//        this.id = id;
+//        this.title = title;
+//        this.author = author;
+//        this.price = price;
+//    }
 
     public Long getId() {
         return id;
@@ -50,6 +47,4 @@ public class Book {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-
-
 }
