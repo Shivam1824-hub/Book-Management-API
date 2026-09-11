@@ -33,13 +33,11 @@ public class BookService {
         book.setAuthor(requestDto.getAuthor());
 
         Book savedBook = repository.save(book);
-
 //        BookResponseDto responseDto = new BookResponseDto(savedBook.getId(),savedBook.getTitle(), savedBook.getAuthor(),savedBook.getPrice());
 //        responseDto.setId(savedBook.getId());
 //        responseDto.setTitle(savedBook.getTitle());
 //        responseDto.setAuthor(savedBook.getAuthor());
 //        responseDto.setPrice(savedBook.getPrice());
-
         return new BookResponseDto(savedBook.getId(),savedBook.getTitle(), savedBook.getAuthor(),savedBook.getPrice());
     }
 
@@ -55,13 +53,14 @@ public class BookService {
         return new BookResponseDto(book.getId(), book.getTitle(), book.getAuthor(),book.getPrice());
     }
 
-    public Book updateBookById(Long id, Book updatedData){
+    public BookResponseDto updateBookById(Long id, BookRequestDto updatedData){
         Book book = repository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id: " + id));
+        book.setTitle(updatedData.getTitle());
         book.setAuthor(updatedData.getAuthor());
         book.setPrice(updatedData.getPrice());
-        book.setTitle(updatedData.getTitle());
 
-        return repository.save(book);
+        Book savedBook = repository.save(book);
+        return new BookResponseDto(savedBook.getId(), savedBook.getTitle(), savedBook.getAuthor(), savedBook.getPrice());
     }
 
     public String deleteBookById(Long id) {
