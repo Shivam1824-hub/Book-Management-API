@@ -15,6 +15,7 @@ public class BookResponseDto {
         this.author = author;
         this.price = price;
     }
+
     public Long getId() {
         return id;
     }

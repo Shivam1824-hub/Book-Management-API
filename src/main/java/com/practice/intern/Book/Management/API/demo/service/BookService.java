@@ -50,8 +50,9 @@ public class BookService {
                         book.getId(),book.getTitle(), book.getAuthor(),book.getPrice())).toList();
     }
 
-    public Book getBookById(Long id){
-        return repository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id: " + id));
+    public BookResponseDto getBookById(Long id){
+        Book book = repository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id: " + id));
+        return new BookResponseDto(book.getId(), book.getTitle(), book.getAuthor(),book.getPrice());
     }
 
     public Book updateBookById(Long id, Book updatedData){
