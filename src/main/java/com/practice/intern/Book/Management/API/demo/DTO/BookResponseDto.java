@@ -9,6 +9,12 @@ public class BookResponseDto {
     private String author;
     private BigDecimal price;
 
+    public BookResponseDto(Long id, String title, String author, BigDecimal price) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.price = price;
+    }
     public Long getId() {
         return id;
     }

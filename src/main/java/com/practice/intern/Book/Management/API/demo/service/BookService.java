@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.List;
 
+
 @Service
 public class BookService {
     private final BookRepository repository;
@@ -33,17 +34,20 @@ public class BookService {
 
         Book savedBook = repository.save(book);
 
-        BookResponseDto responseDto = new BookResponseDto();
-        responseDto.setId(savedBook.getId());
-        responseDto.setTitle(savedBook.getTitle());
-        responseDto.setAuthor(savedBook.getAuthor());
-        responseDto.setPrice(savedBook.getPrice());
+//        BookResponseDto responseDto = new BookResponseDto(savedBook.getId(),savedBook.getTitle(), savedBook.getAuthor(),savedBook.getPrice());
+//        responseDto.setId(savedBook.getId());
+//        responseDto.setTitle(savedBook.getTitle());
+//        responseDto.setAuthor(savedBook.getAuthor());
+//        responseDto.setPrice(savedBook.getPrice());
 
-        return responseDto;
+        return new BookResponseDto(savedBook.getId(),savedBook.getTitle(), savedBook.getAuthor(),savedBook.getPrice());
     }
 
-    public List<Book> getAllBooks(){
-        return repository.findAll();
+    public List<BookResponseDto> getAllBooks(){
+        List<Book> books= repository.findAll();
+       return books.stream()
+                .map(book ->new BookResponseDto(
+                        book.getId(),book.getTitle(), book.getAuthor(),book.getPrice())).toList();
     }
 
     public Book getBookById(Long id){

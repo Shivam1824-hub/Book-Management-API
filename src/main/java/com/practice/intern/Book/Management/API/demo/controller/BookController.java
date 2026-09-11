@@ -29,9 +29,9 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks(){
-        List<Book> book = service.getAllBooks() ;
-        return ResponseEntity.ok(book);
+    public ResponseEntity<List<BookResponseDto>> getAllBooks(){
+        List<BookResponseDto> books = service.getAllBooks() ;
+        return ResponseEntity.ok(books);
     }
 
     @GetMapping("/{id}")
