@@ -25,10 +25,6 @@ public class BookService {
         this.repository = repository;
     }
 
-//    public Book createBook(Book book){
-//        return repository.save(book);
-//    }
-
     public BookResponseDto createBook(BookRequestDto requestDto){
         Book book = new Book();
         book.setTitle(requestDto.getTitle());

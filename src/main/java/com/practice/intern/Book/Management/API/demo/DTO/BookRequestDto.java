@@ -1,6 +1,5 @@
 package com.practice.intern.Book.Management.API.demo.DTO;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -15,7 +14,7 @@ public class BookRequestDto {
     private String author;
 
     @NotNull(message = "Price is required")
-    @Positive(message = "Price cannot be negative")
+    @Positive(message = "Price must be greater than zero")
     private BigDecimal price;
 
     public BookRequestDto(String title, String author, BigDecimal price) {

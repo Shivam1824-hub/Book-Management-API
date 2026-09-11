@@ -6,9 +6,6 @@ import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +21,6 @@ public class BookController {
     public BookController(BookService service){
         this.service = service;
     }
-
-//    @PostMapping
-//    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book){
-//        Book saveBook= service.createBook(book);
-//        return new ResponseEntity<>(saveBook, HttpStatus.CREATED);
-//    }
 
     @PostMapping
     public ResponseEntity<BookResponseDto> createBook(@Valid @RequestBody BookRequestDto requestDto){
