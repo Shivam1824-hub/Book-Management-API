@@ -18,7 +18,7 @@ public class BookSearchRequestDto {
     @Min(value = 0, message = "Page index cannot be negative")
     private int page = 0;
 
-    @Min(value = 1,message = "Page size must be at least 1")
+    @Min(value = 10,message = "Page size must be at least 1")
     private int size = 10;
 
     private String sortBy = "price";

@@ -6,7 +6,6 @@ import com.practice.intern.Book.Management.API.demo.DTO.BookSearchRequestDto;
 import com.practice.intern.Book.Management.API.demo.exception.BookNotFoundException;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -97,7 +95,7 @@ public class BookService {
 //            String matchPattern = "%"+search.trim().toLowerCase()+"%";
 //            spec =spec.and((root, query, cb) ->cb.or(
 //                    cb.like(cb.lower(root.get("title")),matchPattern),
-//                    cb.like(cb.lower(root.get("author")),matchPattern)) );
+//                    cb.like(cb.lower(root.get("author")),matchPattern)));
 //        }
 //        if(minPrice !=null){
 //            spec =spec.and((root, query, cb) ->cb.greaterThanOrEqualTo(root.get("price"),minPrice));
@@ -109,7 +107,30 @@ public class BookService {
 //    }
 
     public Page<BookResponseDto> getBooks(BookSearchRequestDto searchRequestDto){
+        Sort sort = "desc".equalsIgnoreCase(searchRequestDto.getDirection()) ? 
+                Sort.by(searchRequestDto.getSortBy()).descending() : Sort.by(searchRequestDto.getSortBy()).ascending();
+        Pageable pageable = PageRequest.of(searchRequestDto.getPage(),searchRequestDto.getSize(),sort);
+        Specification<Book> spec = (((root, query, cb) -> cb.conjunction() ));
+        
+        if(searchRequestDto.getSearch()!= null && !searchRequestDto.getSearch().trim().isEmpty()){
+            String matchPattern = "%"+searchRequestDto.getSearch().trim().toLowerCase()+"%";
+            spec = spec.and((root, query, cb) ->cb.or(
+                    cb.like(cb.lower(root.get("title")),matchPattern),
+                    cb.like(cb.lower(root.get("author")),matchPattern)));
+        }
+        if(searchRequestDto.getMinPrice()!= null){
+            spec = spec.and(((root, query, cb) 
+                    -> cb.greaterThanOrEqualTo(root.get("price"),searchRequestDto.getMinPrice())));
+        }
+        if(searchRequestDto.getMaxPrice()!= null){
+            spec = spec.and(((root, query, cb) 
+                    -> cb.lessThanOrEqualTo(root.get("price"),searchRequestDto.getMaxPrice())));
+        }
+
+        Page<Book> bookPage = repository.findAll(spec,pageable);
+        return bookPage
+                .map(book ->new BookResponseDto(
+                        book.getId(),book.getTitle(), book.getAuthor(),book.getPrice()));
 
     }
-
 }

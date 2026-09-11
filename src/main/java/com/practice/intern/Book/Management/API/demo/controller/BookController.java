@@ -3,7 +3,6 @@ package com.practice.intern.Book.Management.API.demo.controller;
 import com.practice.intern.Book.Management.API.demo.DTO.BookRequestDto;
 import com.practice.intern.Book.Management.API.demo.DTO.BookResponseDto;
 import com.practice.intern.Book.Management.API.demo.DTO.BookSearchRequestDto;
-import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -47,7 +45,7 @@ public class BookController {
         return ResponseEntity.ok(updatebook);
     }
 
-s@DeleteMapping("/{id}")
+@DeleteMapping("/{id}")
     public  ResponseEntity<String> deletedBookById(@PathVariable Long id){
          String message = service.deleteBookById(id);
          return ResponseEntity.ok(message);
@@ -90,6 +88,7 @@ s@DeleteMapping("/{id}")
 //        return ResponseEntity.ok(sortedBooks);
 //    }
 
+    @GetMapping("/")
     public ResponseEntity<Page<BookResponseDto>> getBooks(@Valid @ModelAttribute BookSearchRequestDto search){
         Page<BookResponseDto> sortedBooks = service.getBooks(search);
         return ResponseEntity.ok(sortedBooks);
