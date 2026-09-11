@@ -1,6 +1,8 @@
 package com.practice.intern.Book.Management.API.demo.DTO;
 
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,19 +11,27 @@ import java.math.BigDecimal;
 public class BookSearchRequestDto {
     private String search;
 
-    @Min(value = 0, message = "Price should be greater than zero")
+    @DecimalMin(value = "0.0", inclusive = true,message = "Price should be greater than zero")
     private BigDecimal minPrice;
 
-    @Min(value = 0, message = "Price should be greater than zero")
+    @DecimalMin(value = "0.0", inclusive = true,message = "Price should be greater than zero")
     private BigDecimal maxPrice;
 
     @Min(value = 0, message = "Page index cannot be negative")
     private int page = 0;
 
-    @Min(value = 10,message = "Page size must be at least 1")
-    private int size = 10;
+    @Min(value = 5,message = "Page size must be at least 5")
+    private int size = 5;
 
+    @Pattern(
+            regexp = "title|author|price",
+            message = "sortBy must be one of: title, author, price"
+    )
     private String sortBy = "price";
-    private String direction = "asc";
 
+    @Pattern(
+            regexp = "(?i)asc|desc",
+            message = "direction must be either 'asc' or 'desc'"
+    )
+    private String direction = "asc";
 }
