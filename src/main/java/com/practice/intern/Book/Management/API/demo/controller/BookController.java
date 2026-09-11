@@ -2,6 +2,7 @@ package com.practice.intern.Book.Management.API.demo.controller;
 
 import com.practice.intern.Book.Management.API.demo.DTO.BookRequestDto;
 import com.practice.intern.Book.Management.API.demo.DTO.BookResponseDto;
+import com.practice.intern.Book.Management.API.demo.DTO.BookSearchRequestDto;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.service.BookService;
 import jakarta.validation.Valid;
@@ -46,7 +47,7 @@ public class BookController {
         return ResponseEntity.ok(updatebook);
     }
 
-    @DeleteMapping("/{id}")
+s@DeleteMapping("/{id}")
     public  ResponseEntity<String> deletedBookById(@PathVariable Long id){
          String message = service.deleteBookById(id);
          return ResponseEntity.ok(message);
@@ -59,14 +60,13 @@ public class BookController {
 //        List<Book> findBook = service.findByTitleOrAuthor(title, author);
 //        return  ResponseEntity.ok(findBook);
 //    }
-
 //    @GetMapping("/")
 //    public ResponseEntity<Page<Book>> getSortedBook(
 //            @RequestParam(defaultValue = "0") int page,
 //            @RequestParam(defaultValue = "10") int size,
 //            @RequestParam(defaultValue = "price") String sortBy,
 //            @RequestParam(defaultValue = "asc") String direction){
-////        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
+//     Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).ascending());
 //        Page<Book> sortedbooks = service.getBooksSortedByPrice(page, size, sortBy,direction);
 //        return  ResponseEntity.ok(sortedbooks);
 //    }
@@ -77,19 +77,22 @@ public class BookController {
 //            @RequestParam(required = false) BigDecimal maxPrice){
 //        return ResponseEntity.ok(service.filterBooks(minPrice,maxPrice));
 //    }
+//    @GetMapping("/")
+//    public ResponseEntity<Page<BookResponseDto>> getBooks(
+//            @RequestParam(required = false) String search,
+//            @RequestParam(required = false) BigDecimal minPrice,
+//            @RequestParam(required = false) BigDecimal maxPrice,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "price") String sortBy,
+//            @RequestParam(defaultValue = "asc") String direction){
+//        Page<BookResponseDto> sortedBooks = service.getBooks(search,minPrice, maxPrice, page, size, sortBy, direction);
+//        return ResponseEntity.ok(sortedBooks);
+//    }
 
-    @GetMapping("/")
-    public ResponseEntity<Page<Book>> getBooks(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "price") String sortBy,
-            @RequestParam(defaultValue = "asc") String direction){
-        Page<Book> sortedBooks = service.getBooks(search,minPrice, maxPrice, page, size, sortBy, direction);
+    public ResponseEntity<Page<BookResponseDto>> getBooks(@Valid @ModelAttribute BookSearchRequestDto search){
+        Page<BookResponseDto> sortedBooks = service.getBooks(search);
         return ResponseEntity.ok(sortedBooks);
     }
-
 
 }

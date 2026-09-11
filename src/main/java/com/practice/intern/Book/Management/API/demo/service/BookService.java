@@ -2,6 +2,7 @@ package com.practice.intern.Book.Management.API.demo.service;
 
 import com.practice.intern.Book.Management.API.demo.DTO.BookRequestDto;
 import com.practice.intern.Book.Management.API.demo.DTO.BookResponseDto;
+import com.practice.intern.Book.Management.API.demo.DTO.BookSearchRequestDto;
 import com.practice.intern.Book.Management.API.demo.exception.BookNotFoundException;
 import com.practice.intern.Book.Management.API.demo.model.Book;
 import com.practice.intern.Book.Management.API.demo.repository.BookRepository;
@@ -73,7 +74,6 @@ public class BookService {
 //    public List<Book> findByTitleOrAuthor(String title,String author){
 //        return repository.findByTitleContainsIgnoreCaseOrAuthorContainsIgnoreCase(title,author);
 //    }
-
 //    public Page<Book> getBooksSortedByPrice(int page, int size, String sortBy, String direction){
 //        Sort sorted = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).ascending() :Sort.by(sortBy).descending();
 //        Pageable pageable = PageRequest.of(page, size, sorted);
@@ -88,23 +88,28 @@ public class BookService {
 //        return repository.findAll(spec);
 //    }
 
-    public Page<Book> getBooks(String search,BigDecimal minPrice,BigDecimal maxPrice,int page,int size,String sortBy,String direction){
-        Sort sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();// it is using inline ternary operator
-        Pageable pageable = PageRequest.of(page,size,sort);
-        Specification<Book> spec = ((root, query, cb) -> cb.conjunction());
+//    public Page<Book> getBooks(String search,BigDecimal minPrice,BigDecimal maxPrice,int page,int size,String sortBy,String direction){
+//        Sort sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();// it is using inline ternary operator
+//        Pageable pageable = PageRequest.of(page,size,sort);
+//        Specification<Book> spec = ((root, query, cb) -> cb.conjunction());
+//
+//        if(search!=null && !search.trim().isEmpty()){
+//            String matchPattern = "%"+search.trim().toLowerCase()+"%";
+//            spec =spec.and((root, query, cb) ->cb.or(
+//                    cb.like(cb.lower(root.get("title")),matchPattern),
+//                    cb.like(cb.lower(root.get("author")),matchPattern)) );
+//        }
+//        if(minPrice !=null){
+//            spec =spec.and((root, query, cb) ->cb.greaterThanOrEqualTo(root.get("price"),minPrice));
+//        }
+//        if(maxPrice!=null){
+//            spec = spec.and((root, query, cb) ->cb.lessThanOrEqualTo(root.get("price"),maxPrice));
+//        }
+//        return repository.findAll(spec,pageable);
+//    }
 
-        if(search!=null && !search.trim().isEmpty()){
-            String matchPattern = "%"+search.trim().toLowerCase()+"%";
-            spec =spec.and((root, query, cb) ->cb.or(
-                    cb.like(cb.lower(root.get("title")),matchPattern),
-                    cb.like(cb.lower(root.get("author")),matchPattern)) );
-        }
-        if(minPrice !=null){
-            spec =spec.and((root, query, cb) ->cb.greaterThanOrEqualTo(root.get("price"),minPrice));
-        }
-        if(maxPrice!=null){
-            spec = spec.and((root, query, cb) ->cb.lessThanOrEqualTo(root.get("price"),maxPrice));
-        }
-        return repository.findAll(spec,pageable);
+    public Page<BookResponseDto> getBooks(BookSearchRequestDto searchRequestDto){
+
     }
+
 }
